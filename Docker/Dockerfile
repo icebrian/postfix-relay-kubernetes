@@ -1,4 +1,5 @@
-FROM alpine:3.12.1
+#FROM alpine:3.17.2
+FROM alpine:3.21.0
 
 MAINTAINER Eldad Assis <eldad.assis@gmail.com>
 
@@ -7,8 +8,8 @@ RUN apk add --no-cache \
     postfix \
     rsyslog \
 	libsasl \
-	cyrus-sasl-plain \
 	cyrus-sasl-login \
+	ca-certificates \
     supervisor && \
     /usr/bin/newaliases
 

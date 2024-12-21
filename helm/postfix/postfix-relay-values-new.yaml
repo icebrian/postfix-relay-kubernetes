@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # High availability
-replicaCount: 2
+replicaCount: 1
 
 # Role Based Access Control
 # Ref: https://kubernetes.io/docs/admin/authorization/rbac/
@@ -33,8 +33,8 @@ serviceAccount:
 
 # Docker image
 image:
-  repository: eldada.jfrog.io/docker/postfix-relay
-#  tag: 0.8
+  repository: icebrian/postfix-relay
+  tag: 0.2
   pullPolicy: IfNotPresent
 
 # Exporter Docker image
@@ -62,16 +62,16 @@ serviceMonitor:
 
 # Expose pods with service on port 25
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 25
   exporterPort: 9154
-  loadBalancerIP:
+  loadBalancerIP: 10.10.10.67
 
 # SMTP server details
 # Used by postfix to connect to SMTP server
 smtp:
   # Example with mailgun
-  relayHost: "[smtp.mailgun.org]:587"
+  relayHost: "[smtp.gmail.com]:587"
   relayMyhostname: my.host.local
   relayUsername: relayuser
   relayPassword: relaypassword
@@ -80,7 +80,7 @@ smtp:
 # Optional extra configuration to add or edit in /etc/postfix/main.cf
 # A single string with key=value separated by a semicolon char (;)
 # Example: postfixCustomConfig: "key1 = value1; key2 = value2; key3 = value3"
-postfixCustomConfig:
+postfixCustomConfig: "smtp_use_tls = yes;"
 
 # Resources needed for the postfix container
 resources:
@@ -96,3 +96,4 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
